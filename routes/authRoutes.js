@@ -37,6 +37,9 @@ router.post("/login", (req, res) => {
         // res.send({ message: "wrong credentials" });
         res.status(400).json({ error: "wrong credentials" });
       }
+    } else if (err) {
+      // res.send("not register");
+      res.status(400).json({ error: err });
     } else {
       // res.send("not register");
       res.status(400).json({ error: "not register" });

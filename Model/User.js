@@ -8,6 +8,19 @@ const userSchema = new mongoose.Schema({
   mobile: String,
   birthday: String,
   password: String,
+  score: [
+    {
+      date: {
+        type: Date,
+        default: Date.now(),
+      },
+      question: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Question",
+        unique: true,
+      },
+    },
+  ],
   leetcode_id: String,
   allowed: {
     type: Boolean,

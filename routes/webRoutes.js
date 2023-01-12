@@ -7,7 +7,9 @@ const auth = require("../middleware/auth");
 const {
   createNotice,
   createEvent,
-  updateUser,
+
+  createQuestion,
+  updateScore,
 } = require("../controller/createController");
 router.post("/welcome", auth, (req, res) => {
   // const { email, password } = req.body;
@@ -32,6 +34,7 @@ router.post("/welcome", auth, (req, res) => {
 
 router.post("/notice", auth, createNotice);
 router.post("/event", auth, createEvent);
-router.post("/update/:id", auth, updateUser);
+router.post("/question", createQuestion);
+router.post("/updateScore", auth, updateScore);
 
 module.exports = router;

@@ -2,6 +2,7 @@ const Notice = require("../Model/Notice");
 const Events = require("../Model/Event");
 const moment = require("moment");
 const User = require("../Model/User");
+const Question = require("../Model/Question");
 // const Image = require("../models/Image");
 // const formidable = require("formidable");
 // const fs = require("fs");
@@ -46,7 +47,7 @@ const createEvent = async (req, res) => {
   }
 };
 
-const updateUser = (req, res) => {
+const updateScore = (req, res) => {
   const body = req.body;
 
   if (!body) {
@@ -55,10 +56,18 @@ const updateUser = (req, res) => {
       error: "You must provide a body to update",
     });
   }
+  console.log(body);
 
   User.findOneAndUpdate(
-    { _id: req.params.id },
-    { leetcode_id: body.leetcode_id },
+    { _id: body.userId },
+    {
+      $push: {
+        score: {
+          date: Date.now(),
+          question: body.questionId,
+        },
+      },
+    },
     (err, user) => {
       if (err) {
         return res.status(404).json({
@@ -100,6 +109,23 @@ const updateUser = (req, res) => {
   //       });
   //     });
   // });
+};
+const createQuestion = async (req, res) => {
+  const obj = req.body;
+
+  const question = new Question({
+    name: obj.name,
+    description: obj.description,
+    input: obj.input,
+    output: obj.output,
+  });
+
+  try {
+    await question.save();
+    res.status(201).send(question);
+  } catch (e) {
+    res.status(400).send(e);
+  }
 };
 
 // const addImage = async (req, res) => {
@@ -146,4 +172,4 @@ const updateUser = (req, res) => {
 //   } catch (err) {}
 // };
 
-module.exports = { createEvent, createNotice, updateUser };
+module.exports = { createEvent, createNotice, updateScore, createQuestion };
